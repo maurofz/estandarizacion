@@ -41,23 +41,31 @@ $_SESSION['personas'][] = [
     'categoria' => $categoria
 ];
 
-$indice = count($_SESSION['personas']) - 1;
+$personas = $_SESSION['personas'];
 ?>
+<?php if (empty($personas)): ?>
+<tr class="fila-vacia">
+  <td colspan="7" class="text-center text-muted py-4">No hay registros aún</td>
+</tr>
+<?php else: ?>
+<?php foreach ($personas as $indice => $persona): ?>
 <tr>
-  <td class="fw-medium"><?= htmlspecialchars($nombre) ?></td>
-  <td><?= $edad ?></td>
-  <td><?= $peso ?></td>
-  <td><?= $altura ?></td>
-  <td class="fw-bold text-primary"><?= number_format($imc, 2) ?></td>
-  <td><span class="badge bg-secondary etiqueta"><?= $categoria ?></span></td>
+  <td class="fw-medium"><?= htmlspecialchars($persona['nombre']) ?></td>
+  <td><?= $persona['edad'] ?></td>
+  <td><?= $persona['peso'] ?></td>
+  <td><?= $persona['altura'] ?></td>
+  <td class="fw-bold text-primary"><?= number_format($persona['imc'], 2) ?></td>
+  <td><span class="badge bg-secondary etiqueta"><?= $persona['categoria'] ?></span></td>
   <td class="text-center">
     <button class="btn btn-outline-danger btn-sm boton-eliminar"
             hx-post="../api/eliminar.php"
             hx-vals='{"indice": <?= $indice ?>}'
-            hx-target="closest tr"
-            hx-swap="outerHTML"
+            hx-target="#tablaPersonas"
+            hx-swap="innerHTML"
             title="Eliminar">
       Eliminar
     </button>
   </td>
 </tr>
+<?php endforeach; ?>
+<?php endif; ?>

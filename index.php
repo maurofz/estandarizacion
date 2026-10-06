@@ -28,7 +28,7 @@
               <h5 class="mb-0">Nuevo Registro</h5>
             </div>
             <div class="card-body tarjeta-cuerpo">
-              <form hx-post="api/calcular.php" hx-target="#tablaPersonas" hx-swap="beforeend" class="needs-validation" novalidate>
+              <form hx-post="api/calcular.php" hx-target="#tablaPersonas" hx-swap="innerHTML" class="needs-validation" novalidate>
                 <div class="row g-3">
                   <div class="col-12 col-md-6">
                     <label for="nombre" class="form-label fw-medium etiqueta-formulario">Nombre</label>
