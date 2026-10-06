@@ -26,7 +26,7 @@ $personas = $_SESSION['personas'] ?? [];
   <td><span class="badge bg-secondary etiqueta"><?= $persona['categoria'] ?></span></td>
   <td class="text-center">
     <button class="btn btn-outline-danger btn-sm boton-eliminar"
-            hx-post="../api/eliminar.php"
+            hx-post="api/eliminar.php"
             hx-vals='{"indice": <?= $indice ?>}'
             hx-target="#tablaPersonas"
             hx-swap="innerHTML"
