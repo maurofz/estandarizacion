@@ -11,6 +11,7 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   </head>
   <body class="bg-light min-vh-100 d-flex align-items-center py-5">
     <div class="container">
@@ -27,7 +28,7 @@
               <h5 class="mb-0">Nuevo Registro</h5>
             </div>
             <div class="card-body tarjeta-cuerpo">
-              <form id="formulario" class="needs-validation" novalidate>
+              <form hx-post="/api/calcular.php" hx-target="#tablaPersonas" hx-swap="beforeend" class="needs-validation" novalidate>
                 <div class="row g-3">
                   <div class="col-12 col-md-6">
                     <label for="nombre" class="form-label fw-medium etiqueta-formulario">Nombre</label>
@@ -55,7 +56,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                  <button type="submit" id="btnCalcular" class="btn btn-primary btn-lg px-4 boton boton-principal">
+                  <button type="submit" class="btn btn-primary btn-lg px-4 boton boton-principal">
                     Calcular IMC
                   </button>
                 </div>
@@ -66,7 +67,7 @@
           <div class="card shadow-sm tarjeta">
             <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center tarjeta-encabezado">
               <h5 class="mb-0">Resultados</h5>
-              <button type="button" id="btnLimpiar" class="btn btn-outline-light btn-sm boton boton-esquema-claro boton-pequeno">
+              <button type="button" hx-post="/api/limpiar.php" hx-target="#tablaPersonas" hx-swap="innerHTML" class="btn btn-outline-light btn-sm boton boton-esquema-claro boton-pequeno">
                 Limpiar Tabla
               </button>
             </div>
@@ -85,7 +86,7 @@
                     </tr>
                   </thead>
                   <tbody id="tablaPersonas">
-                    <tr>
+                    <tr class="fila-vacia">
                       <td colspan="7" class="text-center text-muted py-4">No hay registros aún</td>
                     </tr>
                   </tbody>
@@ -107,6 +108,5 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="imc.js"></script>
   </body>
 </html>
