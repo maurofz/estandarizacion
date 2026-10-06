@@ -28,7 +28,7 @@
               <h5 class="mb-0">Nuevo Registro</h5>
             </div>
             <div class="card-body tarjeta-cuerpo">
-              <form hx-post="/api/calcular.php" hx-target="#tablaPersonas" hx-swap="beforeend" class="needs-validation" novalidate>
+              <form hx-post="api/calcular.php" hx-target="#tablaPersonas" hx-swap="beforeend" class="needs-validation" novalidate>
                 <div class="row g-3">
                   <div class="col-12 col-md-6">
                     <label for="nombre" class="form-label fw-medium etiqueta-formulario">Nombre</label>
@@ -67,7 +67,7 @@
           <div class="card shadow-sm tarjeta">
             <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center tarjeta-encabezado">
               <h5 class="mb-0">Resultados</h5>
-              <button type="button" hx-post="/api/limpiar.php" hx-target="#tablaPersonas" hx-swap="innerHTML" class="btn btn-outline-light btn-sm boton boton-esquema-claro boton-pequeno">
+              <button type="button" hx-post="api/limpiar.php" hx-target="#tablaPersonas" hx-swap="innerHTML" class="btn btn-outline-light btn-sm boton boton-esquema-claro boton-pequeno">
                 Limpiar Tabla
               </button>
             </div>

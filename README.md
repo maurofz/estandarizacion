@@ -4,34 +4,15 @@ Aplicación web para calcular el Índice de Masa Corporal (IMC) usando PHP en el
 
 ## Requisitos
 
-- **PHP 8.0+** instalado y en el PATH del sistema
+- **XAMPP** instalado (Apache + PHP)
 - Navegador web moderno
 - Conexión a internet (para cargar Bootstrap y HTMX desde CDN)
 
-## Instalación de PHP en Windows
+## Instalación de XAMPP en Windows
 
-### Opción 1: Chocolatey (recomendado)
-```powershell
-# Abrir PowerShell como Administrador
-Set-ExecutionPolicy Bypass -Scope Process -Force
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-
-# Instalar PHP
-choco install php -y
-
-# Verificar instalación
-php -v
-```
-
-### Opción 2: Descarga manual
-1. Ir a https://windows.php.net/download/
-2. Descargar "VS16 x64 Thread Safe" (ZIP)
-3. Extraer en `C:\php`
-4. Renombrar `php.ini-development` a `php.ini`
-5. En `php.ini` descomentar: `extension_dir = "ext"`
-6. Agregar `C:\php` a la variable de entorno PATH del sistema
-7. Reiniciar terminal y verificar con `php -v`
+1. Descargar XAMPP de https://www.apachefriends.org/es/download.html
+2. Ejecutar el instalador y seleccionar al menos **Apache** y **PHP**
+3. Completar la instalación (por defecto en `C:\xampp`)
 
 ## Cómo probar la aplicación
 
@@ -42,25 +23,34 @@ php -v
    git checkout php-version
    ```
 
-2. **Iniciar el servidor PHP integrado:**
+2. **Copiar el proyecto a la carpeta htdocs de XAMPP:**
    ```powershell
-   php -S localhost:8000
+   # Opción A: Copiar carpeta completa
+   Copy-Item -Path ".\estandarizacion" -Destination "C:\xampp\htdocs\" -Recurse -Force
+   
+   # Opción B: Si ya estás dentro de la carpeta del repo
+   Copy-Item -Path "." -Destination "C:\xampp\htdocs\estandarizacion" -Recurse -Force
    ```
-   *Se mostrará: `PHP 8.x.x Development Server (http://localhost:8000) started`*
 
-3. **Abrir en el navegador:**
-   - Ir a: http://localhost:8000/index.php
-   - O desde PowerShell: `Start-Process "http://localhost:8000/index.php"`
+3. **Iniciar Apache desde XAMPP Control Panel:**
+   - Abrir **XAMPP Control Panel** (acceso directo en Escritorio o Menú Inicio)
+   - Pulsar **Start** en la fila **Apache**
+   - Verificar que el módulo se pone verde con PID y Port (80, 443)
 
-4. **Usar la calculadora:**
+4. **Abrir en el navegador:**
+   ```
+   http://localhost/estandarizacion/index.php
+   ```
+
+5. **Usar la calculadora:**
    - Completar los 4 campos: Nombre, Edad, Peso (kg), Altura (m)
    - Pulsar "Calcular IMC" → la fila aparece en la tabla sin recargar la página
    - Repetir para agregar más personas
    - Pulsar "Eliminar" en una fila para borrarla
    - Pulsar "Limpiar Tabla" para borrar todos los registros
 
-5. **Detener el servidor:**
-   - En la terminal: `Ctrl + C`
+6. **Detener el servidor:**
+   - En XAMPP Control Panel: pulsar **Stop** en Apache
 
 ## Estructura del proyecto
 
@@ -81,8 +71,8 @@ estandarizacion/
 | Componente | Tecnología | Qué hace |
 |------------|------------|----------|
 | Frontend | HTML + Bootstrap 5 + HTMX | UI, envía peticiones, actualiza DOM |
-| Backend | PHP 8 (built-in server) | Calcula, guarda en `$_SESSION`, devuelve HTML parcial |
-| Persistencia | `$_SESSION` | Array `personas` en memoria del servidor (se pierde al reiniciar servidor) |
+| Backend | PHP 8 (Apache) | Calcula, guarda en `$_SESSION`, devuelve HTML parcial |
+| Persistencia | `$_SESSION` | Array `personas` en memoria del servidor (se pierde al reiniciar Apache) |
 
 ## Categorías IMC (OMS)
 
@@ -98,6 +88,7 @@ estandarizacion/
 ## Notas
 
 - **Sin JavaScript propio**: HTMX maneja toda la interactividad (atributos `hx-*`)
-- **Sesión en memoria**: Los datos se pierden al reiniciar `php -S`
+- **Sesión en memoria**: Los datos se pierden al reiniciar Apache
 - **Primera carga**: Descarga Bootstrap/HTMX desde CDN (~200 KB)
+- **Rutas HTMX**: Usan rutas relativas (`api/calcular.php`) para funcionar bajo `http://localhost/estandarizacion/`
 - **Compatible**: Funciona en cualquier navegador moderno sin configuración extra

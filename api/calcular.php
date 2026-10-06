@@ -52,7 +52,7 @@ $indice = count($_SESSION['personas']) - 1;
   <td><span class="badge bg-secondary etiqueta"><?= $categoria ?></span></td>
   <td class="text-center">
     <button class="btn btn-outline-danger btn-sm boton-eliminar"
-            hx-post="/api/eliminar.php"
+            hx-post="../api/eliminar.php"
             hx-vals='{"indice": <?= $indice ?>}'
             hx-target="closest tr"
             hx-swap="outerHTML"
