@@ -11,8 +11,10 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.12.3/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.12.3/brython_stdlib.js"></script>
   </head>
-  <body class="bg-light min-vh-100 d-flex align-items-center py-5">
+  <body onload="brython()" class="bg-light min-vh-100 d-flex align-items-center py-5">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-8">
@@ -107,6 +109,96 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="imc.js"></script>
+    
+    <script type="text/python">
+from browser import document, alert, window
+
+personas = []
+
+def calcular_imc(peso, altura):
+    return peso / (altura * altura)
+
+def determinar_categoria(imc):
+    if imc < 18.5:
+        return "Bajo peso"
+    elif imc < 24.9:
+        return "Peso normal"
+    elif imc < 29.9:
+        return "Sobrepeso"
+    elif imc < 34.9:
+        return "Obesidad Grado 1"
+    elif imc < 39.9:
+        return "Obesidad Grado 2"
+    else:
+        return "Obesidad Grado 3"
+
+def mostrar_personas():
+    tabla = document["tablaPersonas"]
+    tabla.innerHTML = ""
+    
+    if len(personas) == 0:
+        fila_vacia = document.createElement("tr")
+        fila_vacia.className = "fila-vacia"
+        fila_vacia.innerHTML = '<td colspan="7" class="text-center text-muted py-4">No hay registros aún</td>'
+        tabla <= fila_vacia
+        return
+    
+    for indice, persona in enumerate(personas):
+        fila = document.createElement("tr")
+        fila.innerHTML = f"""
+            <td class="fw-medium">{persona['nombre']}</td>
+            <td>{persona['edad']}</td>
+            <td>{persona['peso']}</td>
+            <td>{persona['altura']}</td>
+            <td class="fw-bold text-primary">{persona['imc']:.2f}</td>
+            <td><span class="badge bg-secondary etiqueta">{persona['categoria']}</span></td>
+            <td class="text-center">
+                <button type="button" class="btn btn-outline-danger btn-sm boton-eliminar" onclick="eliminar_persona({indice})" title="Eliminar">
+                    Eliminar
+                </button>
+            </td>
+        """
+        tabla <= fila
+
+def eliminar_persona(indice):
+    personas.pop(indice)
+    mostrar_personas()
+
+def agregar_persona(evento):
+    evento.preventDefault()
+    
+    nombre = document["nombre"].value.strip()
+    edad = int(document["edad"].value or 0)
+    peso = float(document["peso"].value or 0)
+    altura = float(document["altura"].value or 0)
+    
+    if not nombre or not edad or not peso or not altura:
+        alert("Por favor, complete todos los campos correctamente.")
+        return
+    
+    imc = calcular_imc(peso, altura)
+    categoria = determinar_categoria(imc)
+    
+    personas.append({
+        "nombre": nombre,
+        "edad": edad,
+        "peso": peso,
+        "altura": altura,
+        "imc": imc,
+        "categoria": categoria
+    })
+    
+    mostrar_personas()
+    document["formulario"].reset()
+
+def limpiar_tabla(evento):
+    personas.clear()
+    mostrar_personas()
+
+document["formulario"].bind("submit", agregar_persona)
+document["btnLimpiar"].bind("click", limpiar_tabla)
+
+window.eliminar_persona = eliminar_persona
+    </script>
   </body>
 </html>
